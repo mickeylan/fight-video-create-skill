@@ -1,178 +1,55 @@
 # Fight Video Create Skill
 
-[![中文](https://img.shields.io/badge/文档-中文-1677ff)](README.md) [![English](https://img.shields.io/badge/docs-English-64748b)](README.en.md) [![Changelog](https://img.shields.io/badge/changelog-更新日志-8b5cf6)](changelog.md)
+[![中文](https://img.shields.io/badge/文档-中文-64748b)](README.md) [![English](https://img.shields.io/badge/docs-English-1677ff)](README.en.md) [![Changelog](https://img.shields.io/badge/changelog-更新日志-8b5cf6)](changelog.md) [![License](https://img.shields.io/badge/license-CC%20BY--NC--ND%204.0-e74c3c)](LICENSE.md)
 
-# important information
+## Important Notice
 
-I change my posting way to ([Billbill](https://space.bilibili.com/296119304))
+Due to network access issues, future free open-source updates will be published with each release on my Bilibili space (https://space.bilibili.com/296119304).
 
-> Turn one rough fight idea into executable story beats, action chains, spatial routes, and action storyboards.
+# Fight Design & Action Storyboarding
 
-Built for animated dramas, live-action fights, animation, wuxia, xianxia, and ability-driven combat. References provide structure, mechanisms, and quality standards; they never override the characters, weapons, abilities, outcome, duration, or ending you specify.
+Give your AI assistant a complete "fight choreography" capability: one rough idea goes in, and what comes out is a fight story with full context, action design where every move has a basis, and shot-by-shot storyboards ready to roll.
 
-This Skill is limited to fight design and action storyboarding. It does not produce prompts for any model or platform. Prompt wrappers, model/platform syntax, generation parameters, negative prompts, subtitle/audio directives, and ready-to-generate prompt text are prohibited from the reference library.
+## What it can do for you
 
-## Core capabilities
+- **Fight story**: who fights whom, why they fight, and how it ends — including twists and emotional payoffs.
+- **Action design**: moves, combos, attack/defense rhythm, body positioning, and force feedback, with unbroken action chains.
+- **Spatial staging**: both sides' movement, distance changes, and use of the location and environment.
+- **Action storyboards**: broken down shot by shot, with the visual content and pacing of each segment spelled out.
+- **Special skill design**: combat skills with trigger conditions, plus usage boundaries and counter relationships.
+- **Style references**: wuxia, xianxia, fantasy, army formations, arena, street fights, and many more scenarios with mature case studies.
 
-| Capability | What it solves |
-| --- | --- |
-| **Concept to production draft** | Turns a vague premise into conflict, escalation, action causality, staging, and camera structure. |
-| **Layered retrieval** | Searches scenes, action/storyboard plans, move references, conditional skills, and sample scripts in sequence; reads a source only after a match. |
-| **Move plausibility gate** | Checks weapon form, range, pose, support points, character abilities, duration, and action continuity. |
-| **Skill condition gate** | Gives moves priority, retrieves skills only by single-target/group scope, then checks required artifacts, body parts, media, and states. |
-| **Reference ingestion** | Sorts `.docx`, `.txt`, and similar material into scenes, directing plans, move references, conditional skills, or sample scripts. |
-| **Deterministic routing** | Uses keywords, field weights, and semantic signatures to return explainable candidates instead of relying on vague similarity. |
-| **Verifiable delivery** | Validates inventory, files, IDs, keywords, and routing metadata after library changes. |
-
-## Quick start
-
-### 1. Design a fight
-
-Send this minimal request to an agent that supports Skills:
-
-```text
-Use fight-video-create-skill:
-A man with a spear fights a woman with a sword.
-Create a 15-second, 16:9 cinematic storyboard.
-```
-
-The Skill extracts locked facts first, then routes through scene and action/storyboard references. If multiple plans match, it presents the recommended plan and alternatives, then waits for your confirmation before generating the design.
-
-### 2. Ingest references
-
-```text
-Use fight-video-create-skill to ingest these references:
-`Bamboo Grove Fight.docx`, `Riverside Battle.txt`
-```
-
-Before writing anything, the Skill reports for each file:
-
-- the proposed destination and primary purpose;
-- reusable spatial, action, camera, or story mechanisms;
-- duplicate, conflict, and split risks against the current library.
-
-It only deduplicates, writes, updates routing metadata, and validates after confirmation.
-
-## Creation workflow
-
-```text
-Lock the facts
-      ↓
-Scene routing → scene summary or original setting
-      ↓
-Action/storyboard routing → user confirms one primary plan
-      ↓
-Move routing → plausibility gate (only when needed)
-      ↓
-Skill routing → single-target/group candidates → prerequisite confirmation (only when needed)
-      ↓
-Sample-script routing → transfer mechanisms, not proprietary content
-      ↓
-Story + action chain + spatial route + action storyboard + continuity constraints
-```
-
-### Operating principles
-
-1. **User facts come first** — Characters, weapons, abilities, action order, outcome, duration, aspect ratio, and ending cannot be overwritten by a reference.
-2. **Route before reading** — Automatic retrieval requires at least one route-keyword match; zero matches means the relevant part is original work.
-3. **One primary plan at a time** — Action/storyboard plans require confirmation before their protocols are used or combined.
-4. **Every move must be executable** — Key actions need a setup, body path, opponent response, contact or miss, force feedback, result, and next-state condition.
-5. **Moves take priority over skills** — Anything expressible as a martial, weapon, or body-action chain stays in the move library. A selected skill must satisfy its artifact, body-part, medium, or state prerequisites.
-6. **Fight design and storyboards only** — Do not output model/platform prompts or ingest prompt wrappers, generation parameters, negative prompts, subtitle directives, or audio directives.
-7. **Transfer mechanisms only** — Reuse escalation, spatial phases, reversals, climax interfaces, and ending structure without copying proprietary characters, distinctive sentences, or unrelated plot.
-
-## What the output contains
-
-Unless you request another format, the default delivery includes:
-
-1. **Basis of adaptation** — Confirmed plans, scene references, move and skill sources, sample scripts, and original sections;
-2. **Story design** — Objective, conflict, escalation, reversal, causal outcome, and ending;
-3. **Character action signatures** — Opening stance, range, movement, primary offense, counters, damage response, and finisher;
-4. **Action design** — Purpose → body path → opponent response → contact feedback → displacement result → next-action condition;
-5. **Spatial route and storyboard table** — Positions, viewing axis, camera handoff, camera endpoint, and environmental feedback;
-6. **Continuity constraints** — Stable character and weapon states, no body fusion, no turn-based resets, no random axis jumps, and no effects hiding key contacts.
-
-The draft must also enter effective action quickly, give important actions clear consequences, carry each segment's final state into the next, avoid queueing enemies in group fights, derive the ending from an earlier opening, and keep the subject, camera, or environmental aftermath moving in the final frame.
-
-## Reference library
-
-```text
-reference/
-├── scenes/                                 # Scenes, environments, and spatial routes
-├── action-storyboard-design/               # Action and storyboard directing plans
-│   ├── 招式库/                              # Weapons, martial arts, footwork, and combos
-│   └── 技能库/                              # Conditional standalone ability mechanisms
-└── example-scripts/                         # Sample scripts and finished structures
-
-scripts/
-├── route_reference.py                      # Deterministic keyword router
-└── validate_routes.py                      # Routing metadata validator
-```
-
-The reference library currently contains **27 scene entries, 24 action/storyboard plans, 32 move entries, 10 conditional skill mechanisms, and 28 sample-script cases**. Skills are retrieved only by single-target or group scope; secondary prerequisites never participate in matching. The authoritative inventory and keywords are maintained in each directory's `00-路由元.json`.
-
-## Local use and validation
-
-Run routing commands from the repository root:
-
-```bash
-# Search action/storyboard plans
-python -X utf8 scripts/route_reference.py design --query "bamboo grove sword chase"
-
-# Search sample scripts
-python -X utf8 scripts/route_reference.py scripts --query "water blade dark mist cooperative army clear"
-
-# Retrieve skill candidates by scope; secondary prerequisites are not matched
-python -X utf8 scripts/route_reference.py skills --query "群体"
-```
-
-After ingesting material or adding, removing, renaming, merging, or changing a route, run:
-
-```bash
-python -X utf8 scripts/validate_routes.py
-```
-
-On Windows, if the `python` command is not registered, use the Python Launcher:
-
-```powershell
-py -3 -X utf8 scripts/validate_routes.py
-```
-
-`eligible` contains only candidates with at least one keyword match. `available` lists all manually selectable plans and does not imply an automatic match. Skill routing always leaves `primary` empty; after selecting a candidate, inspect the secondary prerequisites in `selection_notice`.
+It focuses on fight design and storyboarding itself. It does not write prompts for AI image or video generation, nor does it handle material collection and organization.
 
 ## Installation
 
-### Clone the repository
+Just hand the zip archive to your agent and ask it to install the skill.
 
-```bash
-git clone https://github.com/qualsenWeb/fight-video-create-skill.git
-```
+It works out of the box — no extra installation or configuration. If you previously installed a skill with the same name, keep only one copy.
 
-### Install through an agent
+## How to use
 
-Send this to an agent that supports Skill installation:
+Once installed, just describe your request in plain language.
 
-```text
-Install this skill: https://github.com/qualsenWeb/fight-video-create-skill
-```
+> Design a fight scene of dual sabers vs. a spear. Rainy night rooftop, 30 seconds, the woman wins in the end.
 
-## Documentation
+**The more specific you are, the closer the result fits.** Covering these points gives the best outcome:
 
-- [Workflow and operating constraints](SKILL.md)
-- [Changelog](changelog.md)
-- [中文 README](README.md)
+| Element | Examples |
+| --- | --- |
+| Characters & relationship | senior sister vs. junior brother, general vs. assassin, three-way ambush |
+| Weapons & abilities | dual Tang sabers, spear, water-element spells |
+| Location & environment | rainy night rooftop, middle of an army formation, narrow alley, cliff edge |
+| Desired outcome | who wins, how they win, the moment you most want to highlight |
+| Duration & aspect ratio | 15s vertical, 60s horizontal |
+| Ending shot | sheathing the blade, rain stopping, camera pulling back |
 
-## Contributions and reference hygiene
+It's fine if you can't cover everything up front — a rough sketch is enough. It will fill in the details first, then confirm them with you one by one.
 
-Contributions of scenes, directing plans, move references, conditional skills, and sample scripts are welcome. When adding, removing, splitting, merging, or renaming material:
+## Tips
 
-1. place it in the directory with the clearest responsibility;
-2. update the relevant `00-路由元.json`;
-3. use natural, discriminative search terms;
-4. run `validate_routes.py` and smoke-test one strong keyword per new route;
-5. preserve source notes and never present an inference as an original source fact;
-6. strip prompt wrappers, model/platform syntax, generation parameters, negative prompts, subtitle/audio directives, and ready-to-generate prompt text; retain only platform-neutral fight knowledge.
-
-## License
-
-This repository currently has no separate license declaration. Confirm copyright and permission requirements before using, distributing, or submitting external reference material.
+- It advances one plan at a time, explains "why it's designed this way" first, and only continues after you approve.
+- Want to see what a skill actually looks like in action? Ask it to pull up the corresponding demo animation.
+- If something's off, just say so: "the attacks are too monotonous", "make the pacing faster", "try a different scene" — it will re-match.
+- The earlier you lock down key settings (characters, weapons, outcome), the less likely things drift off course later.
+- It states which references were used and which parts are entirely original, so you can judge and revise easily.

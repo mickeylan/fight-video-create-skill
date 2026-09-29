@@ -1,180 +1,125 @@
 #!/usr/bin/env python3
-"""Deterministic keyword router for the fight reference library."""
+"""fight-video 资料库检索入口（封装形态）。
 
-from __future__ import annotations
+用法：
+    python -X utf8 route_reference.py <scenes|design|moves|skills|scripts> --query "..."
+    python -X utf8 route_reference.py --read <scope>/<id>
 
-import argparse
-import json
-import re
-import unicodedata
-from pathlib import Path
-from typing import Any
+检索算法与资料正文都封装在 data/ 下的加密容器里，磁盘上没有任何可直接阅读的实现或正文。
+载荷首字节标明类型：S = 混淆后的源码（与解释器版本无关），M = 编译后的字节码（按版本）。
 
-SKILL_ROOT = Path(__file__).resolve().parents[1]
-REFERENCE_ROOT = SKILL_ROOT / "reference"
-SCOPE_PATHS = {
-    "scenes": REFERENCE_ROOT / "scenes" / "00-路由元.json",
-    "design": REFERENCE_ROOT
-    / "action-storyboard-design"
-    / "00-路由元.json",
-    "moves": REFERENCE_ROOT
-    / "action-storyboard-design"
-    / "招式库"
-    / "00-路由元.json",
-    "skills": REFERENCE_ROOT
-    / "action-storyboard-design"
-    / "技能库"
-    / "00-路由元.json",
-    "scripts": REFERENCE_ROOT / "example-scripts" / "00-路由元.json",
-}
-FIELD_WEIGHTS = {
-    "scenes": {
-        "title_keywords": 4,
-        "route_keywords": 2,
-        "scene_signatures": 1,
-    },
-    "design": {
-        "core_keywords": 3,
-        "plot_signatures": 1,
-    },
-    "moves": {
-        "title_keywords": 4,
-        "route_keywords": 2,
-        "technique_signatures": 1,
-    },
-    "skills": {
-        "range_keywords": 1,
-    },
-    "scripts": {
-        "title_keywords": 4,
-        "script_types": 3,
-        "route_keywords": 2,
-        "scene_signatures": 1,
-    },
-}
+本包支持的运行时：任意 Python 3.9+
+"""
+import marshal
+import pathlib
+import sys
+from pathlib import Path as _rP
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+
+import hashlib as _rh
+import hmac as _rm
+import lzma as _rl
+import os as _ro
+
+_R_MAGIC = b"FVB1"
+_R_SN = 16384
+_R_SR = 8
+_R_SP = 1
+_R_MEM = 64 * 1024 * 1024
+_R_HEAD = 52
 
 
-def normalize(value: str) -> str:
-    value = unicodedata.normalize("NFKC", value).casefold()
-    return re.sub(r"[\W_]+", "", value, flags=re.UNICODE)
-
-
-def load_metadata(scope: str) -> dict[str, Any]:
-    path = SCOPE_PATHS[scope]
-    try:
-        return json.loads(path.read_text(encoding="utf-8-sig"))
-    except FileNotFoundError as error:
-        raise SystemExit(f"路由元不存在: {path}") from error
-    except json.JSONDecodeError as error:
-        raise SystemExit(f"路由元 JSON 无效: {path}: {error}") from error
-
-
-def matched_terms(query: str, terms: list[str]) -> list[str]:
-    normalized_query = normalize(query)
-    if not normalized_query:
-        return []
-
-    matches: list[str] = []
-    seen: set[str] = set()
-    for term in terms:
-        normalized_term = normalize(str(term))
-        if not normalized_term or normalized_term in seen:
-            continue
-        if normalized_term in normalized_query:
-            matches.append(str(term))
-            seen.add(normalized_term)
-    return matches
-
-
-def score_route(scope: str, query: str, route: dict[str, Any]) -> dict[str, Any]:
-    field_hits: dict[str, list[str]] = {}
-    unique_hits: dict[str, int] = {}
-    weighted_score = 0
-
-    for field, weight in FIELD_WEIGHTS[scope].items():
-        hits = matched_terms(query, route.get(field, []))
-        if not hits:
-            continue
-        field_hits[field] = hits
-        weighted_score += len(hits) * weight
-        for hit in hits:
-            unique_hits.setdefault(normalize(hit), weight)
-
-    result = {
-        "id": route.get("id"),
-        "file": route.get("file"),
-        "name": route.get("name") or Path(str(route.get("file", ""))).stem,
-        "hit_count": len(unique_hits),
-        "weighted_score": weighted_score,
-        "field_hits": field_hits,
-        "matched_keywords": [
-            hit for hits in field_hits.values() for hit in hits
-        ],
-        "retrieval_hint": route.get("retrieval_hint", ""),
-        "avoid_when": route.get("avoid_when", []),
-    }
-    if scope == "skills":
-        result["selection_notice"] = {
-            "secondary_keywords": route.get("secondary_keywords", []),
-            "condition_prompt": route.get("condition_prompt", ""),
-            "condition_options": route.get("condition_options", []),
-            "move_library_exclusions": route.get(
-                "move_library_exclusions", []
-            ),
-        }
-    return result
-
-
-def route(scope: str, query: str) -> dict[str, Any]:
-    metadata = load_metadata(scope)
-    scored = [score_route(scope, query, item) for item in metadata.get("routes", [])]
-    eligible = sorted(
-        (item for item in scored if item["hit_count"] >= 1),
-        key=lambda item: (
-            -item["hit_count"],
-            -item["weighted_score"],
-            str(item["id"]),
-        ),
+def _r_dk(_pw, _salt):
+    return _rh.scrypt(
+        _pw, salt=_salt, n=_R_SN, r=_R_SR, p=_R_SP, dklen=32, maxmem=_R_MEM
     )
-    available = [
-        {
-            "id": item.get("id"),
-            "file": item.get("file"),
-            "name": item.get("name") or Path(str(item.get("file", ""))).stem,
-            "retrieval_hint": item.get("retrieval_hint", ""),
-        }
-        for item in metadata.get("routes", [])
-    ]
-    match_rule = (
-        "仅按单体或群体范围召回候选；不自动指定主技能；二级条件不参与匹配"
-        if scope == "skills"
-        else "至少命中一个路由关键词；先按唯一命中数、再按字段权重排序"
+
+
+def _r_ks(_key, _n, _nonce):
+    _out = bytearray()
+    _ctr = 0
+    while len(_out) < _n:
+        _out += _rm.new(
+            _key, _nonce + _ctr.to_bytes(8, "big"), _rh.sha256
+        ).digest()
+        _ctr += 1
+    return bytes(_out[:_n])
+
+
+def _r_xor(_a, _b):
+    """异或取 min(len) 字节。
+
+    用大整数异或而不是 ``bytes(x ^ y for ...)``：后者是逐字节的 Python 循环，
+    在 350 KB 正文上要烧掉约 0.3 s，占一次 --read 总耗时的近一半；前者是 C 速度，
+    约 1 ms。``to_bytes`` 显式给长度，前导零字节不会丢。
+    """
+    _n = min(len(_a), len(_b))
+    if _n == 0:
+        return b""
+    _x = int.from_bytes(_a[:_n], "big") ^ int.from_bytes(_b[:_n], "big")
+    return _x.to_bytes(_n, "big")
+
+
+def _r_seal(_pw, _plain):
+    """明文 -> 加密容器。构建端使用。"""
+    _body = _rl.compress(_plain, preset=6)
+    _salt = _ro.urandom(16)
+    _nonce = _ro.urandom(16)
+    _key = _r_dk(_pw, _salt)
+    _ct = _r_xor(_body, _r_ks(_key, len(_body), _nonce))
+    _tag = _rm.new(_key, _R_MAGIC + _salt + _nonce + _ct, _rh.sha256).digest()[:16]
+    return _R_MAGIC + _salt + _nonce + _tag + _ct
+
+
+def _r_open(_pw, _raw):
+    """加密容器 -> 明文。运行端使用；校验失败抛 ValueError。"""
+    if _raw[:4] != _R_MAGIC:
+        raise ValueError("bad container")
+    _salt = _raw[4:20]
+    _nonce = _raw[20:36]
+    _tag = _raw[36:52]
+    _ct = _raw[52:]
+    if len(_ct) < 16 or _R_HEAD > len(_raw):
+        raise ValueError("truncated container")
+    _key = _r_dk(_pw, _salt)
+    _want = _rm.new(_key, _raw[:36] + _ct, _rh.sha256).digest()[:16]
+    if not _rm.compare_digest(_want, _tag):
+        raise ValueError("bad key or corrupted payload")
+    return _rl.decompress(_r_xor(_ct, _r_ks(_key, len(_ct), _nonce)))
+
+_ROOT = _rP(__file__).resolve().parents[1]
+_TAG = (getattr(sys.implementation, "cache_tag", "") or "").replace("-", "_")
+_SUPPORTED = ["任意 Python 3.9+"]
+
+_CANDIDATES = [_ROOT / "data" / "core.fvx"]
+if _TAG:
+    _CANDIDATES.insert(0, _ROOT / "data" / ("core." + _TAG + ".fvx"))
+_PAYLOAD = next((p for p in _CANDIDATES if p.is_file()), None)
+
+if _PAYLOAD is None:
+    raise SystemExit(
+        "本包不含当前 Python 的载荷：需要 %s，当前为 %s"
+        % (", ".join(_SUPPORTED) or "(未知)", _TAG or "(未知)")
     )
-    return {
-        "scope": scope,
-        "query": query,
-        "match_rule": match_rule,
-        "primary": None if scope == "skills" else (eligible[0] if eligible else None),
-        "eligible": eligible,
-        "available": available,
-        "routing_rules": metadata.get("routing_rules", []),
-        "conflict_resolution": metadata.get("conflict_resolution", []),
-    }
 
+_BLOB = _r_open(bytes.fromhex("4231bdadaaa68d093e160c3659454674"), _PAYLOAD.read_bytes())
+_KIND = _BLOB[:1]
+_NS = {"__name__": "_fvcore", "__file__": str(_ROOT / "scripts" / "_fvcore.py")}
 
-def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description="按 JSON 路由元中的关键词检索打斗资料。"
-    )
-    parser.add_argument("scope", choices=sorted(SCOPE_PATHS))
-    parser.add_argument("--query", required=True, help="用户原文与提炼关键词")
-    return parser.parse_args()
+if _KIND == b"S":
+    exec(compile(_BLOB[1:].decode("utf-8"), "<fvcore>", "exec"), _NS)
+elif _KIND == b"M":
+    exec(marshal.loads(_BLOB[1:]), _NS)
+else:
+    raise SystemExit("载荷格式无法识别")
 
+_FV = _NS["__fv__"]
 
-def main() -> None:
-    args = parse_args()
-    print(json.dumps(route(args.scope, args.query), ensure_ascii=False, indent=2))
+_ARGV = sys.argv[1:]
+if _ARGV and _ARGV[0] in ("--read", "-r", "read"):
+    if len(_ARGV) < 2:
+        raise SystemExit("用法: route_reference.py --read <scope>/<id>")
+    raise SystemExit(_FV["read"](_ARGV[1]))
 
-
-if __name__ == "__main__":
-    main()
+raise SystemExit(_FV["cli"](_ARGV))
