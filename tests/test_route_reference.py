@@ -46,6 +46,12 @@ class RouteReferenceTests(unittest.TestCase):
         self.assertIn("剑尖朝前", result["primary"]["matched_keywords"])
         self.assertIn("剑柄朝后", result["primary"]["matched_keywords"])
 
+    def test_sword_flight_defaults_to_no_handheld_weapon(self):
+        body = router.read("moves/38")
+        self.assertIn("默认只存在脚下这一柄载人飞剑", body)
+        self.assertIn("只有用户明确要求手持剑时", body)
+        self.assertIn("禁止人物手持剑、背负剑、腰间佩剑", body)
+
     def test_read_accepts_id_and_catalog_file_name(self):
         by_id = router.read("scenes/03")
         by_name = router.read("scenes/03-古代武侠.txt")
