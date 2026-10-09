@@ -2,13 +2,9 @@
 
 [![中文](https://img.shields.io/badge/文档-中文-64748b)](README.md) [![English](https://img.shields.io/badge/docs-English-1677ff)](README.en.md) [![Changelog](https://img.shields.io/badge/changelog-更新日志-8b5cf6)](changelog.md) [![License](https://img.shields.io/badge/license-CC%20BY--NC--ND%204.0-e74c3c)](LICENSE.md)
 
-## Important Notice
+# Fight Design, Action Storyboarding & Video Prompts
 
-Due to network access issues, future free open-source updates will be published with each release on my Bilibili space (https://space.bilibili.com/296119304).
-
-# Fight Design & Action Storyboarding
-
-Give your AI assistant a complete "fight choreography" capability: one rough idea goes in, and what comes out is a fight story with full context, action design where every move has a basis, and shot-by-shot storyboards ready to roll.
+Give your AI assistant a complete "fight choreography" capability: one rough idea goes in, and what comes out is a fight story with full context, grounded action design, shot-by-shot storyboards, and executable prompts for AI video generation.
 
 ## What it can do for you
 
@@ -16,10 +12,11 @@ Give your AI assistant a complete "fight choreography" capability: one rough ide
 - **Action design**: moves, combos, attack/defense rhythm, body positioning, and force feedback, with unbroken action chains.
 - **Spatial staging**: both sides' movement, distance changes, and use of the location and environment.
 - **Action storyboards**: broken down shot by shot, with the visual content and pacing of each segment spelled out.
+- **Video prompts**: compile the confirmed action chain, spatial route, and camera language into an executable general-purpose or platform-specific prompt.
 - **Special skill design**: combat skills with trigger conditions, plus usage boundaries and counter relationships.
 - **Style references**: wuxia, xianxia, fantasy, army formations, arena, street fights, and many more scenarios with mature case studies.
 
-It focuses on fight design and storyboarding itself. It does not write prompts for AI image or video generation, nor does it handle material collection and organization.
+It focuses on fight design, action storyboarding, and AI video generation prompts. Material collection, organization, and ingestion are outside this skill's scope.
 
 ## Installation
 
