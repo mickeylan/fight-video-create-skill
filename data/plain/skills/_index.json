@@ -1,0 +1,117 @@
+{
+  "available": [
+    {
+      "id": "01",
+      "file": "01-御水控场.md",
+      "name": "御水控场",
+      "showcase": "reference/action-storyboard-design/技能库/技能展示样本/01-御水控场.gif",
+      "retrieval_hint": "群体候选；御水式调取环境水体建立控场区。选中后必须检查水源、水量和控水接口。"
+    },
+    {
+      "id": "02",
+      "file": "02-尾巴联动攻击.md",
+      "name": "尾巴联动攻击",
+      "showcase": "reference/action-storyboard-design/技能库/技能展示样本/02-尾巴联动攻击.gif",
+      "retrieval_hint": "单体或群体候选；适用于尾部等特殊身体结构的配重、改线和失衡恢复。"
+    },
+    {
+      "id": "03",
+      "file": "03-群体精神控制攻击.md",
+      "name": "群体精神控制攻击",
+      "showcase": "reference/action-storyboard-design/技能库/技能展示样本/03-群体精神控制攻击.gif",
+      "retrieval_hint": "单体或群体候选；适用于统一控制既有实体群的方向、疏密、厚度和高度。"
+    },
+    {
+      "id": "04",
+      "file": "04-血祭传送门.md",
+      "name": "血祭传送门",
+      "showcase": "reference/action-storyboard-design/技能库/技能展示样本/04-血祭传送门.gif",
+      "retrieval_hint": "单体或群体候选；适用于血契激活固定媒介并渐进开启群体通道。"
+    },
+    {
+      "id": "05",
+      "file": "05-能量蓄力.md",
+      "name": "能量蓄力",
+      "showcase": "reference/action-storyboard-design/技能库/技能展示样本/05-能量蓄力.gif",
+      "retrieval_hint": "buff 候选；适用于把连续有效位移转化为可中断、可消耗的自身强化状态。"
+    },
+    {
+      "id": "06",
+      "file": "06-能量躯壳冲撞.md",
+      "name": "能量躯壳冲撞",
+      "showcase": "reference/action-storyboard-design/技能库/技能展示样本/06-能量躯壳冲撞.gif",
+      "retrieval_hint": "单体或群体候选；适用于以角色为核心形成完整闭合能量壳并承担宏观接触。"
+    },
+    {
+      "id": "07",
+      "file": "07-模块化武器形态切换.md",
+      "name": "模块化武器形态切换",
+      "showcase": "reference/action-storyboard-design/技能库/技能展示样本/07-模块化武器形态切换.gif",
+      "retrieval_hint": "buff 候选；适用于同一复合武器跨距离、跨功能的形态切换。"
+    },
+    {
+      "id": "08",
+      "file": "08-召唤无人机火力封锁.md",
+      "name": "召唤无人机火力封锁",
+      "showcase": "reference/action-storyboard-design/技能库/技能展示样本/08-召唤无人机火力封锁.gif",
+      "retrieval_hint": "单体或群体候选；适用于部署有限无人机或机械空投单位建立封线、补射和区域压制。选中后必须检查库存、载体、控制链路和回收状态。"
+    },
+    {
+      "id": "09",
+      "file": "09-机械师空投召唤.md",
+      "name": "机械师空投召唤",
+      "showcase": "reference/action-storyboard-design/技能库/技能展示样本/09-机械师空投召唤.gif",
+      "retrieval_hint": "群体候选；适用于通过已建立节点或运输舱把既有单位分批部署到高空、中层与地面；机械空投落地后的组网使用08。"
+    },
+    {
+      "id": "10",
+      "file": "10-召唤空中打击.md",
+      "name": "召唤空中打击",
+      "showcase": "reference/action-storyboard-design/技能库/技能展示样本/10-召唤空中打击.gif",
+      "retrieval_hint": "单体或群体候选；卫星射线式区域能力。选中后必须检查高位节点、坐标接口、射界、供能和冷却。"
+    },
+    {
+      "id": "11",
+      "file": "11-多重魔法门控制.md",
+      "name": "多重魔法门控制",
+      "showcase": "reference/action-storyboard-design/技能库/技能展示样本/11-多重魔法门控制.gif",
+      "retrieval_hint": "单体或群体候选；死亡之门式多方位牵制。选中后必须检查召门权限、门锚、触须承力与关闭条件。"
+    },
+    {
+      "id": "12",
+      "file": "12-六芒星牢笼.md",
+      "name": "六芒星牢笼",
+      "showcase": "reference/action-storyboard-design/技能库/技能展示样本/12-六芒星牢笼.gif",
+      "retrieval_hint": "单体候选；六星光牢式闭合限制。选中后必须检查六节点载体、闭合窗口、维持消耗和解除条件。"
+    },
+    {
+      "id": "13",
+      "file": "13-多法阵殒爆.md",
+      "name": "多法阵殒爆",
+      "showcase": "reference/action-storyboard-design/技能库/技能展示样本/13-多法阵殒爆.gif",
+      "retrieval_hint": "群体候选；鬼神盛宴式既有阵域终结。选中后必须检查阵域库存、职责、触发顺序和清空状态。"
+    },
+    {
+      "id": "14",
+      "file": "14-召唤巨兽吞咬.md",
+      "name": "召唤巨兽吞咬",
+      "showcase": "reference/action-storyboard-design/技能库/技能展示样本/14-召唤巨兽吞咬.gif",
+      "retrieval_hint": "单体或群体候选；Kon式召唤巨兽头部吞咬。选中后必须检查召唤空间、契约、代价、资格、手势口令与目标位置。"
+    },
+    {
+      "id": "15",
+      "file": "15-寂灭指.md",
+      "name": "寂灭指",
+      "showcase": "reference/action-storyboard-design/技能库/技能展示样本/15-寂灭指.gif",
+      "retrieval_hint": "单体候选；Bang式指向无形冲击。选中后必须检查能力接口、指向轴、有效距离、连续节奏和终止条件。"
+    }
+  ],
+  "routing_rules": [
+    "招式库优先于技能库；能转换为具体武学、兵器技法、身体路径或连续招式的内容不得进入技能库。",
+    "自动检索只读取 range_keywords，且其中只允许单体、群体和 buff；拉丁范围词按整词匹配（buff 不命中 debuff、buffer），中文范围词按子串匹配；secondary_keywords、ability_signatures、move_library_exclusions、avoid_when 均不参与匹配和排序。",
+    "技能检索为宽松候选召回，不自动决定采用项；同一范围内的全部命中项都应作为可选技能展示。",
+    "用户或智能体选中技能后，必须展示 secondary_keywords、condition_prompt 和 condition_options，再决定创造条件、使用可行替代或放弃。",
+    "技能机制只补充发动条件、能力状态和终止规则；具体身体动作、兵器接触与连招仍从招式库获取或原创。",
+    "同一机制不得同时存入招式库和技能库；route 中必须用 move_library_exclusions 写明互斥边界。"
+  ]
+}

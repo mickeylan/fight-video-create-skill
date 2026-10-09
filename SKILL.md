@@ -21,9 +21,12 @@ description: 将用户的打斗构想通过场景、动作分镜方案、招式�
 
 ## 路径与工具
 
-资料（场景、动作/分镜方案、招式、技能、示例剧本的关键词表与全部正文）已封装进本 Skill
-的加密资料包：`data/catalog.bin` 存关键词表与调参常量，`data/corpus.bin` 存全部正文。
-目录内没有可直接打开的正文文件，正文一律通过下面的命令读取。
+资料（场景、动作/分镜方案、招式、技能、示例剧本的关键词表与全部正文）存储在明文目录：
+- `data/plain/<scope>/<id>.md` 或 `<id>.txt` - 正文文件（可直接打开阅读）
+- `data/plain/<scope>/<id>.meta.json` - 元数据（关键词、路由提示等）
+- `data/plain/<scope>/_index.json` - 该类目索引
+
+**资料可直接打开阅读**，也可以通过检索脚本读取：
 
 执行确定性检索：
 
@@ -31,8 +34,7 @@ description: 将用户的打斗构想通过场景、动作分镜方案、招式�
 python -X utf8 "<Skill 根目录>/scripts/route_reference.py" <scenes|design|moves|skills|scripts> --query "用户原文与提炼关键词"
 ```
 
-读取正文——本文档中所有「读取某条正文」「读取所选方案正文」「读取案例」「读取技能正文」
-均指这条命令：
+读取正文：
 
 ```bash
 python -X utf8 "<Skill 根目录>/scripts/route_reference.py" --read <scope>/<id>
@@ -54,8 +56,7 @@ Skill 根目录下的完整相对路径，形如 `招式库/招式展示样本/<
 「本环境无法推送文件」并逐条给出样本绝对路径。样本不参与匹配或排序。
 
 关键词表的维护（增删条目、改检索词、重排编号、批量改范围词）由维护方在源码仓库进行，
-用 `python -X utf8 scripts/validate_routes.py` 校验；本发布包不含该校验脚本，
-也不含任何散装正文文件。
+用 `python -X utf8 scripts/validate_routes.py` 校验。
 
 ## 意图路由
 
