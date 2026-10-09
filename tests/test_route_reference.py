@@ -22,7 +22,7 @@ class RouteReferenceTests(unittest.TestCase):
                 self.assertNotIn("未找到", body)
                 self.assertGreater(len(body.strip()), 10)
                 total += 1
-        self.assertEqual(total, 131)
+        self.assertEqual(total, 132)
 
     def test_strong_terms_require_route_metadata_hit(self):
         result = router.route("scenes", "提示词")
@@ -39,6 +39,12 @@ class RouteReferenceTests(unittest.TestCase):
         self.assertFalse(result["weak_fallback"])
         self.assertEqual(result["primary"]["id"], "21")
         self.assertNotIn("35", [item["id"] for item in result["eligible"]])
+
+    def test_sword_flight_routes_to_dedicated_entry(self):
+        result = router.route("moves", "仙子御剑飞行 剑尖朝前 剑柄朝后")
+        self.assertEqual(result["primary"]["id"], "38")
+        self.assertIn("剑尖朝前", result["primary"]["matched_keywords"])
+        self.assertIn("剑柄朝后", result["primary"]["matched_keywords"])
 
     def test_read_accepts_id_and_catalog_file_name(self):
         by_id = router.read("scenes/03")
