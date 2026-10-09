@@ -68,8 +68,8 @@
         {"name": "3D_STYLE", "type": "*", "link": 6}
       ],
       "outputs": [{"name": "SHOT_PLAN", "type": "*", "links": [7], "slot_index": 0}],
-      "properties": {"Node name for S&R": "PromptCompilerPlaceholder"},
-      "widgets_values": ["提示词编译占位节点\n输入：动作母版 + 选定风格 + 角色/武器参考\n输出：分段镜头任务\n每段必须写明：起始姿态、距离、动作链、接触点、受力、空间变化、镜头、特效边界、结束状态、负面约束"]
+      "properties": {"Node name for S&R": "ManualPromptPackageInput"},
+      "widgets_values": ["人工提示词粘贴入口\n提示词由本机根据动作资料生成，不在 ComfyUI 内编写\n按片段分别粘贴：片段职责、起始状态、生成提示词、结束状态、负面约束\n选择写实、国漫或电影级 3D 之一，不要把三种风格同时混进单次生成"]
     },
     {
       "id": 6,

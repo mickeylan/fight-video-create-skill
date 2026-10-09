@@ -47,7 +47,7 @@ class ComfyUIWorkflowTests(unittest.TestCase):
             "RealisticStyle",
             "GuomanStyle",
             "Cinematic3DStyle",
-            "PromptCompilerPlaceholder",
+            "ManualPromptPackageInput",
             "MiniMaxH3SegmentAPlaceholder",
             "ContinuityCheckpointA",
             "MiniMaxH3SegmentBPlaceholder",
