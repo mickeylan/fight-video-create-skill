@@ -52,6 +52,19 @@ class RouteReferenceTests(unittest.TestCase):
         self.assertIn("只有用户明确要求手持剑时", body)
         self.assertIn("禁止人物手持剑、背负剑、腰间佩剑", body)
 
+    def test_sword_flight_has_gender_expression_branches(self):
+        body = router.read("moves/38")
+        self.assertIn("男性角色默认：潇洒、挺拔、御风", body)
+        self.assertIn("女性角色默认：优雅、美丽、轻盈", body)
+        self.assertIn("中性或未指定角色", body)
+        self.assertIn("具体设定优先于下面的默认分支", body)
+
+    def test_sword_flight_landing_does_not_clamp_sword(self):
+        body = router.read("moves/38")
+        self.assertIn("飞剑向人物预定落脚点的外侧横移半个身位", body)
+        self.assertIn("整个过程是侧向下剑，不是跨骑下剑", body)
+        self.assertIn("禁止大幅分腿、夹腿、夹剑", body)
+
     def test_read_accepts_id_and_catalog_file_name(self):
         by_id = router.read("scenes/03")
         by_name = router.read("scenes/03-古代武侠.txt")
