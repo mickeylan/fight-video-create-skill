@@ -65,6 +65,20 @@ class RouteReferenceTests(unittest.TestCase):
         self.assertIn("整个过程是侧向下剑，不是跨骑下剑", body)
         self.assertIn("禁止大幅分腿、夹腿、夹剑", body)
 
+    def test_sword_flight_uses_magic_lock_with_beginner_exception(self):
+        body = router.read("moves/38")
+        self.assertIn("人剑合一", body)
+        self.assertIn("不依靠摩擦、踩踏、重心或空气动力", body)
+        self.assertIn("初学御剑例外", body)
+        self.assertIn("只有用户明确写出", body)
+        self.assertIn("未明确命中上述初学情境时，一律按熟练御剑处理", body)
+
+    def test_sword_flight_character_faces_sword_tip(self):
+        body = router.read("moves/38")
+        self.assertIn("人物朝向必须与飞行方向一致", body)
+        self.assertIn("脸、目光、胸口、骨盆、膝盖和双脚脚尖朝向剑尖", body)
+        self.assertIn("不得转身、倒站或背对剑尖", body)
+
     def test_read_accepts_id_and_catalog_file_name(self):
         by_id = router.read("scenes/03")
         by_name = router.read("scenes/03-古代武侠.txt")
